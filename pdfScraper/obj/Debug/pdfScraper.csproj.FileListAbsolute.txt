@@ -1,0 +1,10 @@
+U:\Work_pfolder\pdfScraper\pdfScraper\bin\Debug\pdfScraper.exe.config
+U:\Work_pfolder\pdfScraper\pdfScraper\bin\Debug\pdfScraper.exe
+U:\Work_pfolder\pdfScraper\pdfScraper\bin\Debug\pdfScraper.pdb
+U:\Work_pfolder\pdfScraper\pdfScraper\bin\Debug\itextsharp.dll
+U:\Work_pfolder\pdfScraper\pdfScraper\bin\Debug\itextsharp.xml
+U:\Work_pfolder\pdfScraper\pdfScraper\obj\Debug\pdfScraper.csproj.CoreCompileInputs.cache
+U:\Work_pfolder\pdfScraper\pdfScraper\obj\Debug\pdfScraper.csproj.CopyComplete
+U:\Work_pfolder\pdfScraper\pdfScraper\obj\Debug\pdfScraper.exe
+U:\Work_pfolder\pdfScraper\pdfScraper\obj\Debug\pdfScraper.pdb
+U:\Work_pfolder\pdfScraper\pdfScraper\obj\Debug\pdfScraper.csprojAssemblyReference.cache

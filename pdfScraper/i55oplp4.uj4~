@@ -1,0 +1,963 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using iTextSharp.text.pdf; // using Visual Studio install in the Package Manager Console - install-package iTextSharp
+using iTextSharp.text.pdf.parser;
+
+namespace ScrapePDFs
+{ 
+    class Program
+	{
+        // Main entry point for the program
+        static void Main(string[] args)
+        {
+           int pdfnum = 0; //number of pdfs you are to go through
+
+            //create prompted for what data would like to be collected
+            //take in user input for data to be collected
+            //use to switch statement to select data that is to be collected from pdf and printed into a text file. 
+            //5 choices would be (1)Reference ET, (2)Precipitation, (3)Crops, (4)Open Water, (5)Riparian 
+            /*          
+            while (pdfnum <= 16)
+            {
+               
+                switch (pdfnum)
+                {
+                    case 0:
+                        {
+                            // creates variable to hold in a list of string variables 
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\Appendix95.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 95");
+                            var header = new List<string>(new string[] { "Year 95 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 6)
+                            {
+                                string result = "";
+                                // Switch statement created to go to certain pages the ET Crops are for each area.
+                                switch (i) 
+                                {
+                                    case 0:
+                                        {
+                                            page = 20; 
+                                            result = "MohaveET  ";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 90;
+                                            result = "ParkerET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 160;
+                                            result = "PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            page = 230;
+                                            result = "NorthGilaET  ";
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            page = 300;
+                                            result = "YumaValleyET  ";
+                                            break;
+                                        }
+                                    case 5:
+                                        {
+                                            page = 370;
+                                            result = "YumaMesaET  ";
+                                            break;
+                                        }
+                                }
+                                // Method call to find pdf page and convert page into a string 
+                                var pdf = pdfText(fName, page);
+
+                                // Regular expression to look for our target data in the PDF
+                                // This is the pattern used for matching in the pdf file
+                                // \d+ = any digit plus extra digit attached
+                                // \D = any non digit
+                                // \s = any white space in the string
+                                // The \d+\D\s represent one one of the numbers found in the tables. 
+                                // There are 13 in total numbers.  Numbers 1-12 are the monthly numbers and
+                                // the last number represents the total sum of the first 12 numbers
+
+                                string pattern = @"Total ET , inches\n0\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+
+                                // If statement created to make readable for the program because 
+                                // a value was missing in the month of Decemeber
+                                if (i == 4)
+                                {
+                                    pattern = @"Total ET , inches\n0\n" + @"\d+\D\d+\s" +
+                                     @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                     @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                     @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                }
+                                // Library call to look for any matches in the page
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+
+                                // If no matches are found display error message
+                                if (matches.Count < 1) 
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                // Else print 
+                                else
+                                {
+                                    result = result + matches[0].Value.Replace("Total ET , inches\n0\n", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 1:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\Appendix96.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 96");
+                            var header = new List<string>(new string[] { "Year 96 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 6)
+                            {
+                                string result = "";
+
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 18;
+                                            result = "MohaveET  ";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 87;
+                                            result = "ParkerET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 156;
+                                            result = "PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            page = 225;
+                                            result = "NorthGilaET  ";
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            page = 294;
+                                            result = "YumaValleyET  ";
+                                            break;
+                                        }
+                                    case 5:
+                                        {
+                                            page = 363;
+                                            result = "YumaMesaET  ";
+                                            break;
+                                        }
+                                }
+                                var pdf = pdfText(fName, page); 
+                              
+                                string pattern = @"Total ET0, inches\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                if (i == 2)
+                                {
+                                    pattern = @"Total ET0, inches \(from data file 9672rawd\.wk4\)\n" + @"\d+\D\d+\s" +
+                                     @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                     @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                     @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                }
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+                                    if(i == 2)
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ET0, inches (from data file 9672rawd.wk4)", "").Trim();
+                                    }
+                                    else 
+                                    result = result + matches[0].Value.Replace("Total ET0, inches\n", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+
+                      
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 2:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\Appendix97.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 97");
+                            var header = new List<string>(new string[] { "Year 97 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 7)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 31;
+                                            result = "MohaveET  ";
+                                            pattern = @"Total ET0, inches from averaging file AVG_ETS\.WK4\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 100;
+                                            pattern = @"Total ET0, inches from averaging file AVG_ETS\.WK4\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "ParkerET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 169;
+                                            result = "PaloVerdeET  ";
+                                            pattern = @"Total ETo, inches \(from averaged data in file AVG_ETS\.WK4\)\n" + @"\d+\D\d+\s" +
+                                          @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                          @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                          @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            page = 307;
+                                            result = "NorthGilaET  ";
+                                            pattern = @"Total ET0, inches \(from averaged data in file AVG_ETS\.WK4\)\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            page = 376;
+                                            result = "YumaValleyET  ";
+                                            pattern = @"Total ET0, inches\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 5:
+                                        {
+                                            page = 445;
+                                            result = "YumaMesaET  ";
+                                            pattern = @"Total ET0, inches\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 6:
+                                        {
+                                            page = 238;
+                                            result = "BlytheNEET  ";
+                                            pattern = @"Total ETo, inches \(from average ETo data in file AVG_ET97\.WK4\)\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                }
+                                var pdf = pdfText(fName, page); // include extra backslash for path
+                             
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+                                    if (result == "MohaveET  " || result == "ParkerET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ET0, inches from averaging file AVG_ETS.WK4", "").Trim();
+                                    }
+                                    else if (result == "PaloVerdeET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ETo, inches (from averaged data in file AVG_ETS.WK4)", "").Trim();
+                                    }
+                                    else if(result == "NorthGilaET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ET0, inches (from averaged data in file AVG_ETS.WK4)", "").Trim();
+                                    }
+                                    else if (result == "BlytheNEET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ETo, inches (from average ETo data in file AVG_ET97.WK4)", "").Trim();
+                                    }
+                                    else
+                                       result = result + matches[0].Value.Replace("Total ET0, inches\n", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                          
+                        }
+                    case 3:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\Appendix98.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 98");
+                            var header = new List<string>(new string[] { "Year 98 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 6)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 30;
+                                            result = "MohaveET  ";
+                                            pattern = @"Total ETo, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 98;
+                                            pattern = @"Total ET0, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "ParkerET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 166;
+                                            result = "PaloVerde/BlytheET  ";
+                                            pattern = @"Total ETo, inches\n" + @"\d+\D\d+\s" +
+                                          @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                          @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                          @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            page = 235;
+                                            result = "NorthGilaET  ";
+                                            pattern = @"Total ET0, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            page = 303;
+                                            result = "YumaValleyET  ";
+                                            pattern = @"Total ET0, inches\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 5:
+                                        {
+                                            page = 371;
+                                            result = "YumaMesaET  ";
+                                            pattern = @"Total ET0, inches\n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                   
+                                }
+                                var pdf = pdfText(fName, page); 
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+                                    if(result == "MohaveET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ETo, inches \n", "").Trim();
+                                    }
+                                    else if(result == "PaloVerde/BlytheET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ETo, inches", "").Trim();
+                                    }
+                                    else if(result == "NorthGilaET  " || result == "YumaMesaET  " || result == "ParkerET  ")
+                                    {
+                                        result = result + matches[0].Value.Replace("Total ET0, inches", "").Trim();
+                                    }
+                                    else
+                                        result = result + matches[0].Value.Replace("Total ET0, inches\n", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+                            
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 4:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\Appendix99.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 99");
+                            var header = new List<string>(new string[] { "Year 99 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 3)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 19;
+                                            result = "MohaveET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 118;
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "Parker/PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 220;
+                                            result = "YumaET  ";
+                                            pattern = @"Reference ET, inches " + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    
+                                        
+
+                                }
+                                var pdf = pdfText(fName, page); 
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+                                    
+                                        result = result + matches[0].Value.Replace("Reference ET, inches", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 5:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\2000AppendixPart1.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 00");
+                            var header = new List<string>(new string[] { "Year 00 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 3)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 67;
+                                            result = "MohaveET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 152;
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "Parker/PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 237;
+                                            result = "YumaET  ";
+                                            pattern = @"Reference ET, inches " + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+
+
+
+                                }
+                                var pdf = pdfText(fName, page);
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+
+                                    result = result + matches[0].Value.Replace("Reference ET, inches", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+                            
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 6:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\01AppendixPart1.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 01");
+                            var header = new List<string>(new string[] { "Year 01 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 3)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 67;
+                                            result = "MohaveET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 158;
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "Parker/PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 249;
+                                            result = "YumaET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+
+
+
+                                }
+                                var pdf = pdfText(fName, page);
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+
+                                    result = result + matches[0].Value.Replace("Reference ET, inches", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 7:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\02AppendixPart1.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 02");
+                            var header = new List<string>(new string[] { "Year 02 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 3)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 66;
+                                            result = "MohaveET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 157;
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "Parker/PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 248;
+                                            result = "YumaET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+
+
+
+                                }
+                                var pdf = pdfText(fName, page);
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+
+                                    result = result + matches[0].Value.Replace("Reference ET, inches", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 8:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\2003LCRAS.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 03");
+                            var header = new List<string>(new string[] { "Year 03 Ag ET Values:" });
+                            //var outFile = System.IO.Path.GetTempFileName() + ".txt";
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 3)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 105;
+                                            result = "MohaveET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 196;
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            result = "Parker/PaloVerdeET  ";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 287;
+                                            result = "YumaET  ";
+                                            pattern = @"Reference ET, inches \n" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+
+
+
+                                }
+                                var pdf = pdfText(fName, page);
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+                                {
+                                    result = result + "File Not Readable";
+                                }
+                                else
+                                {
+
+                                    result = result + matches[0].Value.Replace("Reference ET, inches", "").Trim();
+                                }
+                                // Add our found result to the output container
+                                outPut.Add(result);
+                                i += 1;
+                            }
+
+                            foreach (String s in outPut)
+                            { tw.WriteLine(s); }
+                            tw.WriteLine();
+                            tw.Close();
+                            break;
+                        }
+                    case 9:
+                        {
+                            var outPut = new List<string>();
+                            string fName = "C:\\Users\\mmiranda\\Downloads\\2004LCRAS.pdf";
+                            // Diagnostic messages on the command line
+                            Console.WriteLine("Processing pdf 04");
+                            var header = new List<string>(new string[] { "Year 04 Ag ET Values:" });
+                            string outFile = "U:\\ReferenceET_95to11.txt";
+                            TextWriter tw = new StreamWriter(outFile, true);
+                            foreach (String s in header)
+                            { tw.Write(s); }
+                            tw.WriteLine();
+
+                            int i = 0;
+                            int page = 0;
+                            // Read PDF into a string variable
+                            while (i < 5)
+                            {
+                                string result = "";
+                                string pattern = "";
+                                switch (i)
+                                {
+                                    case 0:
+                                        {
+                                            page = 115;
+                                            result = "MohaveET  ";
+                                            pattern = @"Reference ET \(inches\) " + @"\d+\D\d+\s" +
+                                       @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                       @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                       @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            page = 206;
+                                            result = "Parker/PaloVerdeET  ";
+                                            pattern = @"Reference ET " + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            page = 485;
+                                            result = "YumaET  ";
+                                            pattern = @"Reference ET " + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            page = 388;
+                                            result = "Imperial/CoachellaValleyET  ";
+                                            pattern = @"Reference ET " + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            page = 297;
+                                            result = "Wellton-MohawkET  ";
+                                            pattern = @"Reference ET " + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" +
+                                         @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s" + @"\d+\D\d+\s";
+                                            break;
+                                        }
+
+
+
+                                }
+                                var pdf = pdfText(fName, page);
+                                MatchCollection matches = Regex.Matches(pdf, pattern);
+                                if (matches.Count < 1)
+              
