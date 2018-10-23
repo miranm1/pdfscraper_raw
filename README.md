@@ -11,7 +11,7 @@ label and the other part is the value. The matching function is very percise be 
 that would require escape charactrers. If it successfully finds a match it will be printed into the output file 
 immediately. 
 
-notes:
-Regular Expression to include positive and negative integers and positive and negative decimal values 
+note:
+Regular Expression positive/negative whole number and positive/negative decimal number
 // @"((\-?\d+)+?(\.\d+)?)\s"
 
